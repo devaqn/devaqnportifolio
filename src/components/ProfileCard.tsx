@@ -31,7 +31,7 @@ const ProfileCard = () => {
         {/* SUBSTITUA AQUI PELO CAMINHO DA SUA IMAGEM */}
         <AvatarRing>
           <img
-            src="./public/fotodev.jpeg"
+            src="/public/fotodev.jpeg"
             alt="Foto de perfil"
             className="w-20 h-20 xs:w-24 xs:h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 object-cover"
           />
