@@ -1,0 +1,579 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Dark theme (default) */
+  :root,
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 350 70% 35%;
+    --primary-foreground: 0 0% 98%;
+
+    --accent: 0 85% 45%;
+    --accent-foreground: 0 0% 98%;
+
+    --secondary: 350 50% 15%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 85% 45%;
+
+    --radius: 0.75rem;
+
+    --gradient-start: 0 0% 4%;
+    --gradient-mid: 350 60% 8%;
+    --gradient-end: 350 70% 12%;
+
+    --card-bg: 0 0% 5% / 0.8;
+    --card-border: 0 85% 40% / 0.15;
+    --card-shadow: 0 0% 0% / 0.5;
+
+    --btn-border: 0 85% 40% / 0.4;
+    --btn-hover-bg: 0 85% 45% / 0.1;
+
+    --avatar-glow: 0 85% 45%;
+  }
+
+  /* Light theme - Purple predominant */
+  .light {
+    --background: 270 30% 98%;
+    --foreground: 270 50% 15%;
+
+    --card: 270 20% 100%;
+    --card-foreground: 270 50% 15%;
+
+    --popover: 270 20% 100%;
+    --popover-foreground: 270 50% 15%;
+
+    --primary: 270 70% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --accent: 270 85% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --secondary: 270 40% 92%;
+    --secondary-foreground: 270 60% 35%;
+
+    --muted: 270 25% 94%;
+    --muted-foreground: 270 20% 45%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 270 30% 85%;
+    --input: 270 30% 85%;
+    --ring: 270 80% 55%;
+
+    --gradient-start: 270 20% 98%;
+    --gradient-mid: 270 50% 92%;
+    --gradient-end: 270 60% 85%;
+
+    --card-bg: 0 0% 100% / 0.85;
+    --card-border: 270 60% 70% / 0.25;
+    --card-shadow: 270 50% 50% / 0.15;
+
+    --btn-border: 270 70% 60% / 0.4;
+    --btn-hover-bg: 270 70% 55% / 0.15;
+
+    --avatar-glow: 270 80% 60%;
+    
+    /* Light theme specific animation colors */
+    --light-particle-primary: 270 70% 55%;
+    --light-particle-secondary: 270 60% 70%;
+    --light-avatar-ring-1: 270 80% 60%;
+    --light-avatar-ring-2: 270 60% 75%;
+    --light-avatar-ring-3: 280 70% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Outfit', sans-serif;
+    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer utilities {
+  /* Main gradient background - adapts to theme */
+  .bg-gradient-main {
+    background: radial-gradient(
+      ellipse at center,
+      hsl(var(--gradient-end)) 0%,
+      hsl(var(--gradient-mid)) 40%,
+      hsl(var(--gradient-start)) 100%
+    );
+    transition: background 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile */
+  }
+
+  /* Vignette overlay */
+  .vignette {
+    position: relative;
+  }
+  
+  .vignette::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 40%,
+      hsl(var(--background) / 0.6) 100%
+    );
+    pointer-events: none;
+    transition: background 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Glass card effect - Dark theme with red border */
+  .glass-card {
+    background: hsl(var(--card-bg));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1.5px solid hsl(0 85% 45% / 0.35);
+    box-shadow: 
+      0 25px 50px -12px hsl(var(--card-shadow)),
+      0 0 0 1px hsl(var(--foreground) / 0.02) inset,
+      0 0 30px -10px hsl(0 85% 45% / 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, box-shadow;
+  }
+
+  @media (hover: hover) {
+    .glass-card:hover {
+      border-color: hsl(0 85% 45% / 0.5);
+      box-shadow: 
+        0 30px 60px -12px hsl(var(--card-shadow)),
+        0 0 0 1px hsl(var(--foreground) / 0.04) inset,
+        0 0 40px -8px hsl(0 85% 45% / 0.2);
+    }
+  }
+
+  /* Animated Avatar Container */
+  .avatar-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .avatar-ring-animated {
+    position: relative;
+    padding: 4px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--accent)) 0%,
+      hsl(var(--primary)) 50%,
+      hsl(var(--accent)) 100%
+    );
+    background-size: 200% 200%;
+    animation: gradientRotate 4s ease-in-out infinite;
+  }
+
+  .avatar-ring-animated::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--accent) / 0.6) 0%,
+      transparent 50%,
+      hsl(var(--accent) / 0.6) 100%
+    );
+    background-size: 200% 200%;
+    animation: gradientRotate 4s ease-in-out infinite reverse;
+    filter: blur(8px);
+    z-index: -1;
+  }
+
+  .avatar-inner {
+    border-radius: 9999px;
+    overflow: hidden;
+    background: hsl(var(--background));
+  }
+
+  .avatar-glow {
+    position: absolute;
+    inset: -20px;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle at center,
+      hsl(var(--avatar-glow) / 0.3) 0%,
+      transparent 70%
+    );
+    animation: pulseGlow 3s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -2;
+  }
+
+  @keyframes gradientRotate {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.1);
+    }
+  }
+
+  /* Pill button style - enhanced with smooth hover */
+  .btn-pill {
+    @apply relative overflow-hidden;
+    background: hsl(var(--card-bg));
+    border: 1px solid hsl(var(--btn-border));
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, box-shadow;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-pill::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(var(--accent) / 0.08) 50%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Desktop hover effects only */
+  @media (hover: hover) {
+    .btn-pill:hover::before {
+      transform: translateX(100%);
+    }
+
+    .btn-pill:hover {
+      background: hsl(var(--btn-hover-bg));
+      border-color: hsl(var(--accent) / 0.5);
+      transform: translateY(-2px) scale(1.015);
+      box-shadow: 
+        0 8px 25px -6px hsl(var(--accent) / 0.2),
+        0 0 15px -4px hsl(var(--accent) / 0.1);
+    }
+  }
+
+  .btn-pill:active {
+    transform: translateY(0) scale(0.98);
+    transition-duration: 0.1s;
+  }
+
+  /* Touch feedback for mobile */
+  @media (hover: none) {
+    .btn-pill:active {
+      background: hsl(var(--btn-hover-bg));
+      transform: scale(0.97);
+    }
+  }
+
+  /* Enhanced fade in animation */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  /* Stagger children with varied timing */
+  .stagger-1 { animation-delay: 0.15s; }
+  .stagger-2 { animation-delay: 0.25s; }
+  .stagger-3 { animation-delay: 0.35s; }
+  .stagger-4 { animation-delay: 0.45s; }
+  .stagger-5 { animation-delay: 0.55s; }
+  .stagger-6 { animation-delay: 0.65s; }
+
+  /* Smooth scale on hover for interactive elements */
+  .hover-lift {
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+  }
+
+  /* ========================================
+     LIGHT THEME EXCLUSIVE ENHANCEMENTS
+     (Dark theme remains completely untouched)
+     ======================================== */
+
+  /* Light theme - Enhanced avatar ring animation */
+  .light .avatar-ring-animated {
+    background: linear-gradient(
+      135deg,
+      hsl(270 80% 60%) 0%,
+      hsl(280 70% 55%) 25%,
+      hsl(270 60% 70%) 50%,
+      hsl(260 75% 60%) 75%,
+      hsl(270 80% 60%) 100%
+    );
+    background-size: 300% 300%;
+    animation: lightGradientRotate 5s ease-in-out infinite;
+  }
+
+  .light .avatar-ring-animated::before {
+    background: linear-gradient(
+      135deg,
+      hsl(270 80% 60% / 0.7) 0%,
+      hsl(280 70% 70% / 0.4) 50%,
+      hsl(270 80% 60% / 0.7) 100%
+    );
+    background-size: 300% 300%;
+    animation: lightGradientRotate 5s ease-in-out infinite reverse;
+    filter: blur(12px);
+  }
+
+  .light .avatar-glow {
+    background: radial-gradient(
+      circle at center,
+      hsl(270 80% 60% / 0.4) 0%,
+      hsl(280 70% 65% / 0.2) 40%,
+      transparent 70%
+    );
+    animation: lightPulseGlow 4s ease-in-out infinite;
+  }
+
+  @keyframes lightGradientRotate {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    25% {
+      background-position: 50% 100%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    75% {
+      background-position: 50% 0%;
+    }
+  }
+
+  @keyframes lightPulseGlow {
+    0%, 100% {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    25% {
+      opacity: 0.9;
+      transform: scale(1.08);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.15);
+    }
+    75% {
+      opacity: 0.85;
+      transform: scale(1.05);
+    }
+  }
+
+  /* Light theme - Enhanced button animations */
+  .light .btn-pill {
+    border-color: hsl(270 70% 60% / 0.4);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .light .btn-pill::before {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(270 80% 60% / 0.15) 50%,
+      transparent 100%
+    );
+  }
+
+  @media (hover: hover) {
+    .light .btn-pill:hover {
+      background: hsl(270 70% 55% / 0.1);
+      border-color: hsl(270 80% 55% / 0.6);
+      transform: translateY(-2px) scale(1.015);
+      box-shadow: 
+        0 10px 30px -8px hsl(270 70% 50% / 0.25),
+        0 0 20px -5px hsl(270 80% 60% / 0.15);
+    }
+  }
+
+  .light .btn-pill:active {
+    transform: translateY(0) scale(0.98);
+    transition-duration: 0.1s;
+  }
+
+  /* Light theme - Enhanced card styling with purple border */
+  .light .glass-card {
+    border: 2px solid hsl(270 70% 55% / 0.5);
+    box-shadow: 
+      0 25px 50px -12px hsl(270 50% 50% / 0.12),
+      0 0 0 1px hsl(270 60% 80% / 0.1) inset,
+      0 0 40px -10px hsl(270 70% 60% / 0.25);
+  }
+
+  @media (hover: hover) {
+    .light .glass-card:hover {
+      border-color: hsl(270 75% 55% / 0.7);
+      box-shadow: 
+        0 30px 60px -12px hsl(270 50% 50% / 0.18),
+        0 0 0 1px hsl(270 60% 80% / 0.15) inset,
+        0 0 60px -10px hsl(270 70% 60% / 0.35);
+    }
+  }
+
+  /* Light theme - Text color enhancement */
+  .light .text-muted-foreground {
+    color: hsl(270 30% 45%);
+  }
+
+  /* Light theme - Enhanced microinteractions */
+  .light .hover-lift:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.02);
+  }
+
+  /* ========================================
+     ICON ANIMATIONS (Both themes)
+     ======================================== */
+
+  /* Base icon animation - works on all devices including mobile */
+  .icon-animated {
+    animation: iconFloat 3s ease-in-out infinite;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    transform-origin: center;
+  }
+
+  @keyframes iconFloat {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg) scale(1);
+    }
+    25% {
+      transform: translateY(-1px) rotate(-1.5deg) scale(1.02);
+    }
+    50% {
+      transform: translateY(0) rotate(0deg) scale(1);
+    }
+    75% {
+      transform: translateY(1px) rotate(1.5deg) scale(1.02);
+    }
+  }
+
+  /* Icon hover effects - desktop only */
+  @media (hover: hover) {
+    .group\/btn:hover .icon-animated {
+      animation: iconBounce 0.5s ease-in-out infinite;
+      transform: scale(1.12);
+    }
+  }
+
+  /* Touch feedback for icons - mobile */
+  @media (hover: none) {
+    .group\/btn:active .icon-animated {
+      transform: scale(1.1);
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes iconBounce {
+    0%, 100% {
+      transform: scale(1.12) translateY(0);
+    }
+    50% {
+      transform: scale(1.15) translateY(-2px);
+    }
+  }
+
+  /* ========================================
+     3D CARD EFFECT (Both themes)
+     ======================================== */
+
+  .card-3d {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .card-3d:hover {
+    transform: rotateX(2deg) rotateY(-2deg) translateZ(10px) scale(1.02);
+  }
+
+  /* Dark theme 3D card shadow enhancement */
+  .card-3d {
+    box-shadow: 
+      0 25px 50px -12px hsl(var(--card-shadow)),
+      0 0 0 1px hsl(var(--foreground) / 0.02) inset,
+      0 0 30px -10px hsl(0 85% 45% / 0.15),
+      0 20px 40px -20px hsl(0 0% 0% / 0.4);
+  }
+
+  .card-3d:hover {
+    box-shadow: 
+      0 35px 70px -15px hsl(var(--card-shadow)),
+      0 0 0 1px hsl(var(--foreground) / 0.04) inset,
+      0 0 50px -10px hsl(0 85% 45% / 0.25),
+      0 30px 50px -15px hsl(0 0% 0% / 0.5);
+  }
+
+  /* Light theme 3D card */
+  .light .card-3d {
+    box-shadow: 
+      0 25px 50px -12px hsl(270 50% 50% / 0.15),
+      0 0 0 1px hsl(270 60% 80% / 0.1) inset,
+      0 0 40px -10px hsl(270 70% 60% / 0.25),
+      0 20px 40px -20px hsl(270 40% 30% / 0.2);
+  }
+
+  .light .card-3d:hover {
+    box-shadow: 
+      0 35px 70px -15px hsl(270 50% 50% / 0.22),
+      0 0 0 1px hsl(270 60% 80% / 0.15) inset,
+      0 0 60px -10px hsl(270 70% 60% / 0.35),
+      0 30px 50px -15px hsl(270 40% 30% / 0.25);
+  }
+}
